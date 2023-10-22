@@ -5,7 +5,7 @@ import * as fs from "fs";
 
 const main = async () => {
 	console.log(`running GenQRCodes cli `);
-	const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
+	const font = await Jimp.loadFont(Jimp.FONT_SANS_8_BLACK);
 
 	const { NumQRCodes } = await inquirer.prompt({
 		type: "number",
@@ -59,16 +59,24 @@ const main = async () => {
 		const x = (qrImage.getWidth() - logo.getWidth()) / 2;
 		const y = (qrImage.getHeight() - logo.getHeight()) / 2;
 
-		qrImage.composite(logo, x, y);
+		// Create a new image with extra space at the bottom for text
+		const newHeight = qrImage.getHeight() + 50; // 50 pixels for text
+		const newImage = new Jimp(qrImage.getWidth(), newHeight, 0xffffffff); // White background
+
+		// Composite original qrImage and logo to newImage
+		newImage.composite(qrImage, 0, 0);
+		newImage.composite(logo, x, y);
+
+		// qrImage.composite(logo, x, y);
 
 		// Add textual ID at the bottom of the QR code
-		const text = `ID: ${i}`;
+		const text = `${val}`;
 		const textX = 10; // Choose appropriate x-position based on your needs
-		const textY = qrImage.getHeight() - 40; // Adjust y-position to place text at the bottom
+		const textY = newHeight - 40; // Adjust y-position to place text at the bottom
 
-		qrImage.print(font, textX, textY, text);
+		newImage.print(font, textX, textY, text);
 
-		return qrImage.writeAsync(pathToQRCode);
+		return newImage.writeAsync(pathToQRCode);
 		// return qrImage.writeAsync(pathToQRCode);
 	});
 
