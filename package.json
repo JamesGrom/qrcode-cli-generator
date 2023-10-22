@@ -1,0 +1,25 @@
+{
+	"name": "qrcode-cli-generator",
+	"version": "1.0.0",
+	"description": "free cli that you can use to generate bulk branded qrcodes with any url, tracking ids, logo and sizes",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JamesGrom/qrcode-cli-generator.git"
+	},
+	"author": "James Grom",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/JamesGrom/qrcode-cli-generator/issues"
+	},
+	"homepage": "https://github.com/JamesGrom/qrcode-cli-generator#readme",
+	"dependencies": {
+		"inquirer": "^9.2.11",
+		"jimp": "^0.22.10",
+		"qrcode": "^1.5.3"
+	}
+}
