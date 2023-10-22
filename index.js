@@ -13,6 +13,12 @@ const main = async () => {
 		message: "how many qr code files would you like to generate",
 		default: 10,
 	});
+	const { StartingId } = await inquirer.prompt({
+		type: "number",
+		name: "StartingId",
+		message: "what id # would you like this batch to start with?",
+		default: 0,
+	});
 	console.log(`creating ${NumQRCodes} qrcodes`);
 
 	const { RootUrl } = await inquirer.prompt({
@@ -38,7 +44,7 @@ const main = async () => {
 	});
 
 	const qrStrings = [];
-	for (let i = 0; i < NumQRCodes; i++) {
+	for (let i = StartingId; i < NumQRCodes + StartingId; i++) {
 		qrStrings.push(`${RootUrl}&fid=${i}`);
 	}
 
@@ -70,7 +76,7 @@ const main = async () => {
 		// qrImage.composite(logo, x, y);
 
 		// Add textual ID at the bottom of the QR code
-		const text = `${val}`;
+		const text = `ID: ${i}`;
 		const textX = 10; // Choose appropriate x-position based on your needs
 		const textY = newHeight - 40; // Adjust y-position to place text at the bottom
 
