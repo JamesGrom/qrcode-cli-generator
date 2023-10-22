@@ -5,6 +5,7 @@ import * as fs from "fs";
 
 const main = async () => {
 	console.log(`running GenQRCodes cli `);
+	const font = await Jimp.loadFont(Jimp.FONT_SANS_32_BLACK);
 
 	const { NumQRCodes } = await inquirer.prompt({
 		type: "number",
@@ -33,7 +34,7 @@ const main = async () => {
 		type: "input",
 		name: "BatchName",
 		message: "what should this batch of qr codes be called?",
-		default: `batch_`,
+		default: `batchname`,
 	});
 
 	const qrStrings = [];
@@ -58,7 +59,17 @@ const main = async () => {
 		const x = (qrImage.getWidth() - logo.getWidth()) / 2;
 		const y = (qrImage.getHeight() - logo.getHeight()) / 2;
 
-		return qrImage.composite(logo, x, y).writeAsync(pathToQRCode);
+		qrImage.composite(logo, x, y);
+
+		// Add textual ID at the bottom of the QR code
+		const text = `ID: ${i}`;
+		const textX = 10; // Choose appropriate x-position based on your needs
+		const textY = qrImage.getHeight() - 40; // Adjust y-position to place text at the bottom
+
+		qrImage.print(font, textX, textY, text);
+
+		return qrImage.writeAsync(pathToQRCode);
+		// return qrImage.writeAsync(pathToQRCode);
 	});
 
 	await Promise.all(promisesToSaveQrStrings);
