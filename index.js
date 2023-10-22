@@ -51,7 +51,7 @@ const main = async () => {
 			errorCorrectionLevel: "H",
 		});
 
-		const logo = await Jimp.read(`${logoFilePath}`);
+		const logo = await Jimp.read(`./logos/${logoFilePath}`);
 		logo.scale(0.5);
 		const qrImage = await Jimp.read(pathToQRCode);
 
